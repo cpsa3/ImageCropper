@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/mui.min.css">
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     <!-- <script type="text/javascript" src="js/lrz.mobile.min.js"></script> -->
-    <script type="text/javascript" src="dist/lrz.bundle.js"></script>
+    <script type="text/javascript" src="dist/lrz.all.bundle.js"></script>
     <script type="text/javascript" src="js/cropper.min.js"></script>
     <script type="text/javascript">
     $(function() {
@@ -20,7 +20,7 @@
 
         $('#confirmBtn').on('click', function() {
             $("#showEdit").fadeOut();
-            
+
             var $image = $('#report > img');
             var dataURL = $image.cropper("getCroppedCanvas");
             var imgurl = dataURL.toDataURL("image/jpeg", 0.5);
@@ -86,7 +86,7 @@
             lrz(this.files[0], {
                     width: 800,
                     height: 800,
-                    quality: 0.6
+                    quality: 0.7
                 })
                 .then(function(rst) {
                     console.log(rst);
