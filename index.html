@@ -11,22 +11,7 @@
     <script type="text/javascript" src="js/cropper.min.js"></script>
     <script type="text/javascript">
     $(function() {
-        var input = document.querySelector('input');
-
-        // var $image = $('#report > img');
-        // $image.cropper({
-        //     aspectRatio: 1 / 1,
-        //     autoCropArea: 0.7,
-        //     strict: false,
-        //     guides: false,
-        //     highlight: false,
-        //     dragCrop: false,
-        //     cropBoxMovable: false,
-        //     cropBoxResizable: false,
-        //     zoom: -0.2,
-        //     checkImageOrigin: true,
-        // });
-
+        
         $('#cancleBtn').on('click', function() {
             $("#showEdit").fadeOut();
             $('#showResult').fadeIn();
@@ -64,16 +49,15 @@
                 zoom: -0.2,
                 checkImageOrigin: true,
                 background: false,
-                minContainerHeight:400,
-                minContainerWidth:300
+                minContainerHeight: 400,
+                minContainerWidth: 300
             });
         }
 
-        input.onchange = function() {
-            // 也可以传入图片路径：lrz('../demo.jpg', ...
+        $('#image').on('change', function() {
             lrz(this.files[0], {
-                width: 1000,
-                height: 1000,
+                width: 800,
+                height: 800,
                 // 压缩开始
                 before: function() {
                     console.log('压缩开始');
@@ -88,14 +72,15 @@
                 },
                 // 压缩成功
                 done: function(results) {
-                    //document.getElementById('info').innerText = results.base64Len + ' ' + results.base64;
                     //console.log(results);
 
                     $("#report").html('<img src="' + results.base64 + '" style="width: 100%;height:100%">');
+                    results.base64 = null; //释放内存
                     cutImg();
                 }
             });
-        }
+        });
+
     });
     </script>
 </head>
@@ -103,7 +88,7 @@
 <body>
     <div id="showResult">
         <div style="width: 50%;margin: 0 auto;margin-top: 10px;">
-            <input id='file' type="file" capture="camera" />
+            <input id="image" type="file" capture="camera" />
         </div>
         <div id='info'></div>
         <a href="#picture">
