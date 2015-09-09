@@ -1,0 +1,124 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes">
+    <link rel="stylesheet" type="text/css" href="css/cropper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/mui.min.css">
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <!-- <script type="text/javascript" src="mui.min.js"></script> -->
+    <script type="text/javascript" src="js/lrz.mobile.min.js"></script>
+    <script type="text/javascript" src="js/cropper.min.js"></script>
+    <script type="text/javascript">
+
+    $(function() {
+        var input = document.querySelector('input');
+        var info = document.getElementById('info');
+
+        // var $image = $('#report > img');
+        // $image.cropper({
+        //     aspectRatio: 1 / 1,
+        //     autoCropArea: 0.7,
+        //     strict: false,
+        //     guides: false,
+        //     highlight: false,
+        //     dragCrop: false,
+        //     cropBoxMovable: false,
+        //     cropBoxResizable: false,
+        //     zoom: -0.2,
+        //     checkImageOrigin: true,
+        // });
+
+        $('#cancleBtn').on('click', function() {
+            $("#showEdit").fadeOut();
+        });
+
+        $('#confirmBtn').on('click', function() {
+            $("#showEdit").fadeOut();
+            var $image = $('#report > img');
+
+            var dataURL = $image.cropper("getCroppedCanvas");
+            var imgurl = dataURL.toDataURL("image/jpeg", 0.5);
+            $("#changeAvatar > img").attr("src", imgurl);
+
+            var data = $image.cropper("getData");
+            console.log(data);
+            //console.log('imgurl' + imgurl);
+        });
+
+        function cutImg() {
+            $("#showEdit").fadeIn();
+            var $image = $('#report > img');
+            $image.cropper({
+                aspectRatio: 1 / 1,
+                autoCropArea: 0.7,
+                strict: false,
+                guides: false,
+                highlight: false,
+                dragCrop: false,
+                cropBoxMovable: false,
+                cropBoxResizable: false,
+                zoom: -0.2,
+                checkImageOrigin: true,
+            });
+        }
+
+        input.onchange = function() {
+            // 也可以传入图片路径：lrz('../demo.jpg', ...
+            lrz(this.files[0], {
+                width: 1000,
+                height: 1000,
+                // 压缩开始
+                before: function() {
+                    console.log('压缩开始');
+                },
+                // 压缩失败
+                fail: function(err) {
+                    console.error(err);
+                },
+                // 压缩结束（不论成功失败）
+                always: function() {
+                    console.log('压缩结束');
+                },
+                // 压缩成功
+                done: function(results) {
+                    //info.innerText = results.base64Len + ' ' + results.base64;
+                    //console.log(results);
+
+                    $("#report").html('<img src="' + results.base64 + '" style="width: 300px;height:300px">');
+                    cutImg();
+                    // mui('#picture').popover('toggle');
+                }
+            });
+        }
+    });
+    </script>
+</head>
+
+<body>
+    <div style="width: 50%;margin: 0 auto;margin-top: 10px;">
+        <input type="file" capture="camera" />
+    </div>
+    <div id='info'></div>
+    <a href="#picture">
+        <div id="changeAvatar" style="margin-top: 10px;margin-left: 20px;">
+            <img src="/image/default.jpg" style="width: 100px">
+        </div>
+    </a>
+    <div>
+        <button class="mui-btn" data-mui-style="fab" id='cancleBtn'>取消</button>
+        <button class="mui-btn" data-mui-style="fab" data-mui-color="primary" id='confirmBtn'>确定</button>
+    </div>
+    <div id="showEdit">
+        <!-- <header class="mui-bar mui-bar-nav mui-nav-bg" style="background:none; position:absolute; top:0;">
+            <a class="mui-icon iconfont icon-roundclosefill mui-pull-left" style="color:#ffffff; font-size:36px;" onclick="closeEdit();"></a>
+            <a class="mui-icon iconfont icon-roundcheckfill mui-pull-right" style="color:#ffffff; font-size:36px;" onclick="confirm();"></a>
+        </header> -->
+        <div id="report">
+            <!-- <img src="mei.jpg" style="width: 300px;height:300px"> -->
+        </div>
+    </div>
+</body>
+
+</html>
