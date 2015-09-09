@@ -7,11 +7,12 @@
     <link rel="stylesheet" type="text/css" href="css/cropper.min.css">
     <link rel="stylesheet" type="text/css" href="css/mui.min.css">
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="js/lrz.mobile.min.js"></script>
+    <!-- <script type="text/javascript" src="js/lrz.mobile.min.js"></script> -->
+    <script type="text/javascript" src="dist/lrz.bundle.js"></script>
     <script type="text/javascript" src="js/cropper.min.js"></script>
     <script type="text/javascript">
     $(function() {
-        
+
         $('#cancleBtn').on('click', function() {
             $("#showEdit").fadeOut();
             $('#showResult').fadeIn();
@@ -19,8 +20,8 @@
 
         $('#confirmBtn').on('click', function() {
             $("#showEdit").fadeOut();
+            
             var $image = $('#report > img');
-
             var dataURL = $image.cropper("getCroppedCanvas");
             var imgurl = dataURL.toDataURL("image/jpeg", 0.5);
             $("#changeAvatar > img").attr("src", imgurl);
@@ -55,30 +56,64 @@
         }
 
         $('#image').on('change', function() {
-            lrz(this.files[0], {
-                width: 800,
-                height: 800,
-                // 压缩开始
-                before: function() {
-                    console.log('压缩开始');
-                },
-                // 压缩失败
-                fail: function(err) {
-                    console.error(err);
-                },
-                // 压缩结束（不论成功失败）
-                always: function() {
-                    console.log('压缩结束');
-                },
-                // 压缩成功
-                done: function(results) {
-                    //console.log(results);
+            //lrz3: https://github.com/think2011/localResizeIMG3
+            // lrz(this.files[0], {
+            //     width: 800,
+            //     height: 800,
+            //     // 压缩开始
+            //     before: function() {
+            //         console.log('压缩开始');
+            //     },
+            //     // 压缩失败
+            //     fail: function(err) {
+            //         console.error(err);
+            //     },
+            //     // 压缩结束（不论成功失败）
+            //     always: function() {
+            //         console.log('压缩结束');
+            //     },
+            //     // 压缩成功
+            //     done: function(results) {
+            //         console.log(results);
 
-                    $("#report").html('<img src="' + results.base64 + '" style="width: 100%;height:100%">');
-                    results.base64 = null; //释放内存
+            //         $("#report").html('<img src="' + results.base64 + '" style="width: 100%;height:100%">');
+            //         results.base64 = null; //释放内存
+            //         cutImg();
+            //     }
+            // });
+
+            //lrz4: https://github.com/think2011/localResizeIMG4
+            lrz(this.files[0], {
+                    width: 800,
+                    height: 800,
+                    quality: 0.6
+                })
+                .then(function(rst) {
+                    console.log(rst);
+
+                    $("#report").html('<img src="' + rst.base64 + '" style="width: 100%;height:100%">');
                     cutImg();
-                }
-            });
+                    return rst;
+                })
+                .then(function(rst) {
+                    // 这里该上传给后端啦
+                    // 伪代码：ajax(rst.base64)..
+
+                    return rst;
+                })
+                .then(function(rst) {
+                    // 如果您需要，一直then下去都行
+                    // 因为是Promise对象，可以很方便组织代码 \(^o^)/~
+                })
+                .catch(function(err) {
+                    // 万一出错了，这里可以捕捉到错误信息
+                    // 而且以上的then都不会执行
+
+                    alert(err);
+                })
+                .always(function() {
+                    // 不管是成功失败，这里都会执行
+                });
         });
 
     });
