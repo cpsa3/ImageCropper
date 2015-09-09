@@ -30,6 +30,7 @@
 
         $('#cancleBtn').on('click', function() {
             $("#showEdit").fadeOut();
+            $('#showResult').fadeIn();
         });
 
         $('#confirmBtn').on('click', function() {
@@ -40,12 +41,15 @@
             var imgurl = dataURL.toDataURL("image/jpeg", 0.5);
             $("#changeAvatar > img").attr("src", imgurl);
 
-            var data = $image.cropper("getData");
-            console.log(data);
+            $('#showResult').fadeIn();
+
+            //var data = $image.cropper("getData");
+            //console.log(data);
             //console.log('imgurl' + imgurl);
         });
 
         function cutImg() {
+            $('#showResult').fadeOut();
             $("#showEdit").fadeIn();
             var $image = $('#report > img');
             $image.cropper({
@@ -87,9 +91,8 @@
                     //info.innerText = results.base64Len + ' ' + results.base64;
                     //console.log(results);
 
-                    $("#report").html('<img src="' + results.base64 + '" style="width: 300px;height:300px">');
+                    $("#report").html('<img src="' + results.base64 + '" style="width: 300px;height:600px">');
                     cutImg();
-                    // mui('#picture').popover('toggle');
                 }
             });
         }
@@ -98,19 +101,21 @@
 </head>
 
 <body>
-    <div style="width: 50%;margin: 0 auto;margin-top: 10px;">
-        <input type="file" capture="camera" />
-    </div>
-    <div id='info'></div>
-    <a href="#picture">
-        <div id="changeAvatar" style="margin-top: 10px;margin-left: 20px;">
-            <img src="/image/default.jpg" style="width: 100px">
+    <div id="showResult">
+        <div style="width: 50%;margin: 0 auto;margin-top: 10px;">
+            <input type="file" capture="camera" />
         </div>
-    </a>
-    <div id="showEdit" style="display: none">
-        <div >
+        <div id='info'></div>
+        <a href="#picture">
+            <div id="changeAvatar" style="margin-top: 10px;margin-left: 20px;">
+                <img src="/image/default.jpg" style="width: 100px">
+            </div>
+        </a>
+    </div>
+    <div id="showEdit" style="display: none;width:100%;height: 100%;position: absolute;top:0;left: 0;z-index: 9;">
+        <div style="width:100%;position: absolute;top:10px;left:0px;">
             <button class="mui-btn" data-mui-style="fab" id='cancleBtn'>取消</button>
-            <button class="mui-btn" data-mui-style="fab" data-mui-color="primary" id='confirmBtn'>确定</button>
+            <button class="mui-btn" data-mui-style="fab" data-mui-color="primary" id='confirmBtn' style="float:right">确定</button>
         </div>
         <!-- <header class="mui-bar mui-bar-nav mui-nav-bg" style="background:none; position:absolute; top:0;">
             <a class="mui-icon iconfont icon-roundclosefill mui-pull-left" style="color:#ffffff; font-size:36px;" onclick="closeEdit();"></a>
