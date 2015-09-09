@@ -1,0 +1,12 @@
+{
+  "name": "image-cropper",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "prestart": "npm install",
+    "start": "http-server -a localhost -p 8000 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^0.7.5"
+  }
+}
