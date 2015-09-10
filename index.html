@@ -61,6 +61,29 @@
             });
         }
 
+        function doFinish(startTimestamp, sSize, rst) {
+            var finishTimestamp = (new Date()).valueOf();
+            var elapsedTime = (finishTimestamp - startTimestamp);
+            $('#elapsedTime').text('压缩耗时： ' + elapsedTime + 'ms');
+
+            var sourceSize = toFixed2(sSize / 1024),
+                resultSize = toFixed2(rst.base64Len / 1024),
+                scale = parseInt(100 - (resultSize / sourceSize * 100));
+
+            var p = document.getElementById('zipResult');
+            p.style.fontSize = 13 + 'px';
+            p.innerHTML = '源文件：<span style="color: #ff4136;">' +
+                sourceSize + 'KB' +
+                '</span> <br />' +
+                '压缩后传输Base64：<span style="color: #28b62c;">' +
+                resultSize + 'KB (省' + scale + '%)' +
+                '</span> ';
+
+
+            $("#report").html('<img src="' + rst.base64 + '" style="width: 100%;height:100%">');
+            cutImg();
+        }
+
         $('#image').on('change', function() {
             var startTimestamp = (new Date()).valueOf();
             var that = this;
@@ -99,27 +122,7 @@
                 })
                 .then(function(rst) {
                     //console.log(rst);
-
-                    var finishTimestamp = (new Date()).valueOf();
-                    var elapsedTime = (finishTimestamp - startTimestamp);
-                    $('#elapsedTime').text('压缩耗时： ' + elapsedTime + 'ms');
-
-                    var sourceSize = toFixed2(that.files[0].size / 1024),
-                        resultSize = toFixed2(rst.base64Len / 1024),
-                        scale = parseInt(100 - (resultSize / sourceSize * 100));
-
-                    var p = document.getElementById('zipResult');
-                    p.style.fontSize = 13 + 'px';
-                    p.innerHTML = '源文件：<span style="color: #ff4136;">' +
-                        sourceSize + 'KB' +
-                        '</span> <br />' +
-                        '压缩后传输Base64：<span style="color: #28b62c;">' +
-                        resultSize + 'KB (省' + scale + '%)' +
-                        '</span> ';
-
-
-                    $("#report").html('<img src="' + rst.base64 + '" style="width: 100%;height:100%">');
-                    cutImg();
+                    doFinish(startTimestamp, that.files[0].size, rst);
                     return rst;
                 })
                 .then(function(rst) {
