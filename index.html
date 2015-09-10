@@ -13,6 +13,12 @@
     <script type="text/javascript">
     $(function() {
 
+        function toFixed2(num) {
+            return parseFloat(+num.toFixed(2));
+        }
+
+        $('#ua').html('UA: ' + navigator.userAgent);
+
         $('#cancleBtn').on('click', function() {
             $("#showEdit").fadeOut();
             $('#showResult').fadeIn();
@@ -56,6 +62,9 @@
         }
 
         $('#image').on('change', function() {
+            var startTimestamp = (new Date()).valueOf();
+            var that = this;
+
             //lrz3: https://github.com/think2011/localResizeIMG3
             // lrz(this.files[0], {
             //     width: 800,
@@ -89,7 +98,25 @@
                     quality: 0.7
                 })
                 .then(function(rst) {
-                    console.log(rst);
+                    //console.log(rst);
+
+                    var finishTimestamp = (new Date()).valueOf();
+                    var elapsedTime = (finishTimestamp - startTimestamp);
+                    $('#elapsedTime').text('压缩耗时： ' + elapsedTime + 'ms');
+
+                    var sourceSize = toFixed2(that.files[0].size / 1024),
+                        resultSize = toFixed2(rst.base64Len / 1024),
+                        scale = parseInt(100 - (resultSize / sourceSize * 100));
+
+                    var p = document.getElementById('zipResult');
+                    p.style.fontSize = 13 + 'px';
+                    p.innerHTML = '源文件：<span style="color: #ff4136;">' +
+                        sourceSize + 'KB' +
+                        '</span> <br />' +
+                        '压缩后传输Base64：<span style="color: #28b62c;">' +
+                        resultSize + 'KB (省' + scale + '%)' +
+                        '</span> ';
+
 
                     $("#report").html('<img src="' + rst.base64 + '" style="width: 100%;height:100%">');
                     cutImg();
@@ -125,12 +152,14 @@
         <div style="width: 50%;margin: 0 auto;margin-top: 10px;">
             <input id="image" type="file" capture="camera" />
         </div>
-        <div id='info'></div>
-        <a href="#picture">
-            <div id="changeAvatar" style="margin-top: 10px;margin-left: 20px;">
-                <img src="/image/default.jpg" style="width: 100px">
-            </div>
-        </a>
+        <div style="width: 80%;margin: 0 auto;margin-top: 10px;">
+            <div id='elapsedTime' style="margin-bottom: 10px"></div>
+            <p id='zipResult'></p>
+            <div id='ua'></div>
+        </div>
+        <div id="changeAvatar" style="margin-top: 35px;">
+            <img src="/image/default.jpg" style="width: 100px;margin-top: 10px;margin: 0 auto;display:block;">
+        </div>
     </div>
     <div id="showEdit" style="display: none;width:100%;height: 100%;position: absolute;top:0;left: 0;z-index: 9;">
         <div style="width:100%;position: absolute;top:10px;left:0px;">
