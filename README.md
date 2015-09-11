@@ -1,5 +1,10 @@
 # ImageCropper
-图片上传，前端压缩，裁剪（支持手机端）
+图片上传，前端压缩，裁剪（支持手机端拖拽，图片放大、缩小）
+
+## 示例
+ ![image] (https://github.com/cpsa3/ImageCropper/blob/master/image/1.jpg)
+ ![image] (https://github.com/cpsa3/ImageCropper/blob/master/image/2.jpg)
+ ![image] (https://github.com/cpsa3/ImageCropper/blob/master/image/3.jpg)
 
 ## 说明
 * 压缩使用[localResizeIMG3](https://github.com/think2011/localResizeIMG3)

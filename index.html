@@ -106,13 +106,12 @@
             //     },
             //     // 压缩成功
             //     done: function(results) {
-            //         console.log(results);
-
-            //         $("#report").html('<img src="' + results.base64 + '" style="width: 100%;height:100%">');
+            //         //console.log(results);
+            //         doFinish(startTimestamp, that.files[0].size, results);
             //         results.base64 = null; //释放内存
-            //         cutImg();
             //     }
             // });
+
 
             //lrz4: https://github.com/think2011/localResizeIMG4
             lrz(this.files[0], {
