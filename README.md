@@ -7,7 +7,7 @@
  ![image] (https://github.com/cpsa3/ImageCropper/blob/master/image/3.jpg)
 
 ## 说明
-* 压缩使用[localResizeIMG3](https://github.com/think2011/localResizeIMG3)
+* 压缩使用[localResizeIMG4](https://github.com/think2011/localResizeIMG4)
 * 裁剪使用[cropper](https://github.com/fengyuanchen/cropper)
 
 
